@@ -4,6 +4,7 @@ import { cartApi } from '@/api/cart'
 
 export const useCartStore = defineStore('cart', () => {
   const items = ref([])
+  const error = ref(null)
 
   const total = computed(() =>
     items.value.reduce((sum, item) => sum + Number(item.dish.price ?? 0) * item.quantity, 0)
@@ -14,18 +15,32 @@ export const useCartStore = defineStore('cart', () => {
   )
 
   async function fetchCart() {
-    items.value = await cartApi.list()
+    error.value = null
+    try {
+      items.value = await cartApi.list()
+    } catch (e) {
+      error.value = e.message
+      items.value = []
+    }
   }
 
   async function addItem(dishId) {
-    await cartApi.add(dishId)
-    await fetchCart()
+    try {
+      await cartApi.add(dishId)
+      await fetchCart()
+    } catch (e) {
+      error.value = e.message
+    }
   }
 
   async function removeItem(itemId) {
-    await cartApi.remove(itemId)
-    items.value = items.value.filter(i => i.id !== itemId)
+    try {
+      await cartApi.remove(itemId)
+      items.value = items.value.filter(i => i.id !== itemId)
+    } catch (e) {
+      error.value = e.message
+    }
   }
 
-  return { items, total, itemCount, fetchCart, addItem, removeItem }
+  return { items, error, total, itemCount, fetchCart, addItem, removeItem }
 })

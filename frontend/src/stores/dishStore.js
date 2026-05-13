@@ -33,7 +33,11 @@ export const useDishStore = defineStore('dish', () => {
   }
 
   async function fetchTags() {
-    allTags.value = await tagApi.list()
+    try {
+      allTags.value = await tagApi.list()
+    } catch {
+      // non-fatal: tag filter just stays empty
+    }
   }
 
   async function createDish(payload) {

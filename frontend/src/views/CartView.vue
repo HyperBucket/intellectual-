@@ -4,6 +4,7 @@
       <h1>Your cart</h1>
 
       <p v-if="loading" class="status">Loading…</p>
+      <p v-else-if="cartStore.error" class="status error">Could not load cart. Please try again.</p>
 
       <div v-else-if="!cartStore.items.length" class="empty">
         <div class="empty-icon">🛒</div>
@@ -12,7 +13,7 @@
         <RouterLink to="/menu" class="btn-primary">Browse menu</RouterLink>
       </div>
 
-      <div v-else class="layout">
+      <div v-else-if="cartStore.items.length" class="layout">
         <ul class="item-list">
           <li v-for="item in cartStore.items" :key="item.id" class="item">
             <div class="item-img-wrap">
@@ -74,6 +75,7 @@ onMounted(async () => {
 h1 { font-size: 2rem; font-weight: 800; margin-bottom: 2rem; }
 
 .status { color: var(--text-secondary); }
+.status.error { color: #dc2626; }
 
 /* Empty state */
 .empty { text-align: center; padding: 5rem 0; display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }

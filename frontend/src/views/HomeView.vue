@@ -16,6 +16,7 @@
         <p class="sub">Our most loved plates this month</p>
 
         <p v-if="loading" class="status">Loading…</p>
+        <p v-else-if="dishStore.error" class="status error">Could not load dishes. Please try again.</p>
 
         <div v-else-if="featured.length" class="grid">
           <div v-for="dish in featured" :key="dish.id" class="dish-card">
@@ -104,6 +105,7 @@ async function addToCart(dish) {
 h2  { font-size: 1.75rem; font-weight: 800; margin-bottom: 0.35rem; }
 .sub { color: var(--text-secondary); margin-bottom: 2rem; }
 .status { color: var(--text-secondary); text-align: center; padding: 3rem 0; }
+.status.error { color: #dc2626; }
 .link { color: var(--primary); font-weight: 600; }
 
 /* Grid */

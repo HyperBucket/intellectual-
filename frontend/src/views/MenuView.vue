@@ -25,7 +25,10 @@
         @edit="openEdit"
         @delete="confirmDelete"
       />
-      <div v-if="!store.filteredDishes.length" class="empty">No dishes match the selected filters.</div>
+      <div v-if="!store.filteredDishes.length" class="empty">
+        <span v-if="store.selectedTags.length">No dishes found for the selected filters.</span>
+        <span v-else>No dishes found.</span>
+      </div>
     </div>
 
     <!-- Modals -->
@@ -67,8 +70,11 @@ function openEdit(dish) { editingDish.value = dish; showModal.value = true }
 function confirmDelete(dish) { deletingDish.value = dish }
 
 async function doDelete() {
-  await store.deleteDish(deletingDish.value.id)
-  deletingDish.value = null
+  try {
+    await store.deleteDish(deletingDish.value.id)
+  } finally {
+    deletingDish.value = null
+  }
 }
 
 onMounted(async () => {
