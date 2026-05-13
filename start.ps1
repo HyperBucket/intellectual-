@@ -37,7 +37,7 @@ Start-Process powershell -ArgumentList "-NoExit", "-Command", `
 # Start frontend in a new window
 Write-Host "Starting frontend on :5173..." -ForegroundColor Cyan
 Start-Process powershell -ArgumentList "-NoExit", "-Command", `
-    "Set-Location '$root\frontend'; Write-Host 'Frontend starting...' -ForegroundColor Cyan; npm run dev"
+    "Set-Location '$root\frontend'; if (-not (Test-Path node_modules)) { npm install }; Write-Host 'Frontend starting...' -ForegroundColor Cyan; npm run dev"
 
 Write-Host ""
 Write-Host "All services launching:" -ForegroundColor Green

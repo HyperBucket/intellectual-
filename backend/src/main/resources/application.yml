@@ -21,6 +21,12 @@ spring:
     redis:
       time-to-live: 600000  # 10 minutes in ms
 
+minio:
+  endpoint: http://127.0.0.1:9000
+  access-key: intellectual
+  secret-key: intellectual123
+  bucket: dish-photos
+
 server:
   port: 8080
 

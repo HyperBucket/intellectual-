@@ -29,6 +29,25 @@ services:
       timeout: 5s
       retries: 5
 
+  minio:
+    image: minio/minio:latest
+    container_name: intellectual-minio
+    command: server /data --console-address ":9090"
+    environment:
+      MINIO_ROOT_USER: intellectual
+      MINIO_ROOT_PASSWORD: intellectual123
+    ports:
+      - "9000:9000"   # S3 API  (used by Spring)
+      - "9090:9090"   # Web console  → http://localhost:9090
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 volumes:
   postgres_data:
   redis_data:
+  minio_data:

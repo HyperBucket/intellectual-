@@ -17,6 +17,7 @@ Write-Host "Backend build OK" -ForegroundColor Green
 Write-Host ""
 Write-Host "=== Building frontend ===" -ForegroundColor Cyan
 Set-Location "$root\frontend"
+npm install
 npm run build
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Frontend build FAILED" -ForegroundColor Red
